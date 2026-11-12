@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOOD TO EVIL STUDIO - Ultimate Morality Video & Thumbnail Creator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif']
+                    },
+                    colors: {
+                        studio: {
+                            950: '#090a0f',
+                            900: '#12141f',
+                            800: '#1a1d2e',
+                            700: '#272b42',
+                            600: '#383e5c',
+                            500: '#4f587d',
+                            accent: '#f59e0b',
+                            accentHover: '#d97706',
+                            good: '#3b82f6',
+                            evil: '#ef4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-display { font-family: 'Montserrat', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #12141f; }
+        ::-webkit-scrollbar-thumb { background: #272b42; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #383e5c; }
+        .text-outline {
+            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0px 4px 8px rgba(0,0,0,0.8);
+        }
+        .gradient-title {
+            background: linear-gradient(180deg, #fef08a 0%, #eab308 50%, #ca8a04 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-studio-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+
+    <!-- Top Navbar -->
+    <header class="bg-studio-900 border-b border-studio-800 h-16 px-6 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center space-x-4 cursor-pointer" onclick="app.navigate('home')">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-red-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-scale-balanced text-black text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-display font-black tracking-wider text-lg bg-gradient-to-r from-white via-slate-200 to-amber-400 bg-clip-text text-transparent">GOOD TO EVIL STUDIO</h1>
+                <p class="text-xs text-slate-400 tracking-widest font-semibold uppercase">Video & Thumbnail Creator</p>
+            </div>
+        </div>
+
+        <nav class="hidden md:flex items-center space-x-1 text-sm font-medium">
+            <button onclick="app.navigate('home')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:bg-studio-800 hover:text-white transition" data-target="home"><i class="fa-solid fa-house mr-2"></i>Home</button>
+            <button onclick="app.navigate('projects')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:bg-studio-800 hover:text-white transition" data-target="projects"><i class="fa-solid fa-folder-open mr-2"></i>Projects</button>
+            <button onclick="app.navigate('thumbnailMaker')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:bg-studio-800 hover:text-white transition" data-target="thumbnailMaker"><i class="fa-solid fa-image mr-2"></i>Thumbnail Maker</button>
+            <button onclick="app.navigate('characters')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:bg-studio-800 hover:text-white transition" data-target="characters"><i class="fa-solid fa-users mr-2"></i>Characters</button>
+            <button onclick="app.navigate('settings')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:bg-studio-800 hover:text-white transition" data-target="settings"><i class="fa-solid fa-gear mr-2"></i>Settings</button>
+        </nav>
+
+        <div class="flex items-center space-x-3">
+            <button id="header-project-badge" onclick="app.navigate('editor')" class="hidden bg-studio-800 hover:bg-studio-700 border border-studio-600 text-xs px-3 py-1.5 rounded-lg flex items-center space-x-2 transition">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="header-proj-title" class="font-semibold text-slate-200 truncate max-w-[120px]">No Project</span>
+                <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+            </button>
+            <button onclick="app.openNewProjectModal()" class="bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 py-2 rounded-xl text-sm shadow-lg shadow-amber-500/20 flex items-center space-x-2 transition">
+                <i class="fa-solid fa-plus"></i>
+                <span>New Project</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col relative overflow-hidden">
+
+        <!-- 1. HOME SCREEN -->
+        <section id="screen-home" class="view-screen flex-1 p-6 md:p-10 overflow-y-auto">
+            <div class="max-w-7xl mx-auto space-y-10">
+                <!-- Hero Banner -->
+                <div class="relative bg-gradient-to-r from-studio-900 via-studio-800 to-studio-900 p-8 md:p-12 rounded-3xl border border-studio-700 shadow-2xl overflow-hidden flex flex-col md:flex-row items-center justify-between">
+                    <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-10 -top-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="relative z-10 max-w-2xl space-y-4">
+                        <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-amber-500/30"><i class="fa-solid fa-clapperboard mr-1.5"></i>Cinematic Morality & Thumbnail Studio</span>
+                        <h2 class="text-4xl md:text-5xl font-display font-black tracking-tight text-white">Create Upscaled Cinematic Morality Videos & WebM Exports.</h2>
+                        <p class="text-slate-300 text-base leading-relaxed">Build professional morality ranking videos with dedicated section title cards, per-section music uploads, ultra-sharp 4K/2K upscaled rendering, and direct WebM exports.</p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="app.openNewProjectModal()" class="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-3 rounded-xl shadow-lg shadow-amber-500/25 flex items-center space-x-2 transition transform hover:-translate-y-0.5">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>Create New Video Project</span>
+                            </button>
+                            <button onclick="app.navigate('thumbnailMaker')" class="bg-studio-700 hover:bg-studio-600 text-white font-semibold px-6 py-3 rounded-xl border border-studio-600 transition">
+                                <i class="fa-solid fa-image mr-2"></i>Thumbnail Maker
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-8 md:mt-0 relative z-10 grid grid-cols-2 gap-4">
+                        <div class="bg-studio-950/80 p-5 rounded-2xl border border-studio-700/60 backdrop-blur text-center space-y-2">
+                            <i class="fa-solid fa-bolt text-3xl text-amber-400"></i>
+                            <h4 class="font-bold text-sm text-white">4K Upscaled Engine</h4>
+                            <p class="text-xs text-slate-400">Super-sampled crisp text & portraits</p>
+                        </div>
+                        <div class="bg-studio-950/80 p-5 rounded-2xl border border-studio-700/60 backdrop-blur text-center space-y-2">
+                            <i class="fa-solid fa-music text-3xl text-blue-400"></i>
+                            <h4 class="font-bold text-sm text-white">Section Audio & Cards</h4>
+                            <p class="text-xs text-slate-400">Custom music per section & title cards</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions / Feature Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div onclick="app.navigate('thumbnailMaker')" class="bg-studio-900 hover:bg-studio-800/80 border border-studio-800 hover:border-studio-700 p-6 rounded-2xl cursor-pointer transition group">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-1">Thumbnail Maker</h3>
+                        <p class="text-xs text-slate-400">Design viral YouTube thumbnails with split sky/fire and halos.</p>
+                    </div>
+                    <div onclick="app.navigate('projects')" class="bg-studio-900 hover:bg-studio-800/80 border border-studio-800 hover:border-studio-700 p-6 rounded-2xl cursor-pointer transition group">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-film"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-1">Video Projects</h3>
+                        <p class="text-xs text-slate-400">Manage video slideshows, sections, and WebM exports.</p>
+                    </div>
+                    <div onclick="app.navigate('characters')" class="bg-studio-900 hover:bg-studio-800/80 border border-studio-800 hover:border-studio-700 p-6 rounded-2xl cursor-pointer transition group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-1">Characters</h3>
+                        <p class="text-xs text-slate-400">Manage character profiles, portraits, and deed histories.</p>
+                    </div>
+                    <div onclick="app.navigate('settings')" class="bg-studio-900 hover:bg-studio-800/80 border border-studio-800 hover:border-studio-700 p-6 rounded-2xl cursor-pointer transition group">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-1">Settings & Backup</h3>
+                        <p class="text-xs text-slate-400">IndexedDB storage and JSON backups.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. THUMBNAIL MAKER SCREEN -->
+        <section id="screen-thumbnailMaker" class="view-screen hidden flex-1 flex flex-col lg:flex-row overflow-hidden bg-studio-900">
+            <!-- Left Panel: Thumbnail Controls -->
+            <div class="w-full lg:w-96 bg-studio-950 border-r border-studio-800 flex flex-col h-full overflow-y-auto p-6 space-y-6">
+                <div>
+                    <h3 class="font-display font-bold text-xl text-white">Thumbnail Studio</h3>
+                    <p class="text-xs text-slate-400">Create viral Good-to-Evil YouTube thumbnails.</p>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Top Header Title</label>
+                        <input type="text" id="thumb-title" value="GOOD TO EVIL" oninput="app.renderThumbnail()" class="w-full bg-studio-900 border border-studio-700 rounded-xl p-3 text-white font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Header Background Color</label>
+                        <select id="thumb-header-bg" onchange="app.renderThumbnail()" class="w-full bg-studio-900 border border-studio-700 rounded-xl p-3 text-white">
+                            <option value="yellow">Yellow / Gold Banner</option>
+                            <option value="red">Red Banner</option>
+                            <option value="purple">Purple Banner</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Background Style</label>
+                        <select id="thumb-bg-style" onchange="app.renderThumbnail()" class="w-full bg-studio-900 border border-studio-700 rounded-xl p-3 text-white">
+                            <option value="split-sky-fire">Split Sky (Good) & Fire (Evil)</option>
+                            <option value="solid-sky">Solid Sky / Clouds</option>
+                            <option value="solid-fire">Solid Hellfire</option>
+                            <option value="stripes">Diagonal Charcoal Stripes</option>
+                        </select>
+                    </div>
+
+                    <div class="border-t border-studio-800 pt-4 space-y-3">
+                        <h4 class="font-bold text-white">Left Character (Good)</h4>
+                        <input type="text" id="thumb-char1-img" value="https://placehold.co/400x400/3b82f6/white?text=Good+Char" oninput="app.renderThumbnail()" class="w-full bg-studio-900 border border-studio-700 rounded-lg p-2 text-white" placeholder="Image URL">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="thumb-char1-halo" checked onchange="app.renderThumbnail()" class="accent-amber-500">
+                            <span>Add Angel Halo</span>
+                        </label>
+                    </div>
+
+                    <div class="border-t border-studio-800 pt-4 space-y-3">
+                        <h4 class="font-bold text-white">Center Character</h4>
+                        <input type="text" id="thumb-char2-img" value="https://placehold.co/400x400/f59e0b/white?text=Main+Char" oninput="app.renderThumbnail()" class="w-full bg-studio-900 border border-studio-700 rounded-lg p-2 text-white" placeholder="Image URL">
+                    </div>
+
+                    <div class="border-t border-studio-800 pt-4 space-y-3">
+                        <h4 class="font-bold text-white">Right Character (Evil)</h4>
+                        <input type="text" id="thumb-char3-img" value="https://placehold.co/400x400/ef4444/white?text=Evil+Char" oninput="app.renderThumbnail()" class="w-full bg-studio-900 border border-studio-700 rounded-lg p-2 text-white" placeholder="Image URL">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="thumb-char3-horns" checked onchange="app.renderThumbnail()" class="accent-red-500">
+                            <span>Add Devil Horns</span>
+                        </label>
+                    </div>
+
+                    <div class="pt-4">
+                        <button onclick="app.downloadThumbnail()" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 rounded-xl shadow-lg flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-download"></i>
+                            <span>Download Thumbnail (PNG)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Preview Stage -->
+            <div class="flex-1 flex flex-col items-center justify-center p-6 bg-studio-950 overflow-auto">
+                <div class="relative shadow-2xl rounded-2xl overflow-hidden border border-studio-800 bg-black flex items-center justify-center" style="width: 800px; height: 450px; max-width: 100%; aspect-ratio: 16/9;">
+                    <canvas id="thumb-canvas" width="1280" height="720" class="w-full h-full object-contain"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PROJECTS SCREEN -->
+        <section id="screen-projects" class="view-screen hidden flex-1 p-6 md:p-10 overflow-y-auto">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-3xl font-display font-bold text-white">Video Projects Library</h2>
+                        <p class="text-slate-400 text-sm">All morality analysis projects stored in local IndexedDB.</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="app.openNewProjectModal()" class="bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 py-2.5 rounded-xl text-sm shadow-lg flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Create New Project</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="projects-list-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PROJECT EDITOR / STUDIO -->
+        <section id="screen-editor" class="view-screen hidden flex-1 flex flex-col lg:flex-row overflow-hidden bg-studio-900">
+            <!-- Left Sidebar -->
+            <div class="w-full lg:w-80 bg-studio-950 border-r border-studio-800 flex flex-col h-full">
+                <div class="p-4 border-b border-studio-800 flex items-center justify-between">
+                    <div>
+                        <h3 id="editor-project-title-label" class="font-bold text-white truncate max-w-[180px]">Project Name</h3>
+                        <p class="text-[11px] text-slate-400">Upscale Mode: <span id="editor-aspect-label">4K Ultra (2x Super-sampled)</span></p>
+                    </div>
+                    <button onclick="app.navigate('projects')" class="text-xs bg-studio-800 hover:bg-studio-700 px-3 py-1.5 rounded-lg text-slate-300 transition">Back</button>
+                </div>
+
+                <!-- Editor Tab Nav -->
+                <div class="grid grid-cols-5 bg-studio-900 border-b border-studio-800 text-center text-xs">
+                    <button onclick="app.switchEditorTab('timeline')" class="editor-tab-btn py-3 text-amber-400 border-b-2 border-amber-400 font-semibold transition" data-tab="timeline" title="Timeline"><i class="fa-solid fa-film"></i></button>
+                    <button onclick="app.switchEditorTab('sections')" class="editor-tab-btn py-3 text-slate-400 hover:text-white transition" data-tab="sections" title="Sections & Title Cards"><i class="fa-solid fa-layer-group"></i></button>
+                    <button onclick="app.switchEditorTab('characters')" class="editor-tab-btn py-3 text-slate-400 hover:text-white transition" data-tab="characters" title="Characters"><i class="fa-solid fa-users"></i></button>
+                    <button onclick="app.switchEditorTab('audio')" class="editor-tab-btn py-3 text-slate-400 hover:text-white transition" data-tab="audio" title="Section Music"><i class="fa-solid fa-music"></i></button>
+                    <button onclick="app.switchEditorTab('export')" class="editor-tab-btn py-3 text-slate-400 hover:text-white transition" data-tab="export" title="WebM Export"><i class="fa-solid fa-download"></i></button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-4 space-y-6">
+                    <!-- TIMELINE TAB -->
+                    <div id="editor-tab-timeline" class="editor-tab-content space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400">Slideshow Timeline</h4>
+                            <button onclick="app.refreshEditorUI()" class="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded border border-amber-500/30">Refresh</button>
+                        </div>
+                        <div id="editor-slides-list" class="space-y-2"></div>
+                    </div>
+
+                    <!-- SECTIONS & TITLE CARDS TAB -->
+                    <div id="editor-tab-sections" class="editor-tab-content hidden space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400">Section Title Cards</h4>
+                            <button onclick="app.openAddSectionModal()" class="text-xs bg-blue-600 text-white px-2.5 py-1 rounded">Add Section</button>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Customize title cards like "THE GOOD", "GRAY AREA", "BAD & EVIL" with custom backgrounds and card themes.</p>
+                        <div id="editor-sections-list" class="space-y-3"></div>
+                    </div>
+
+                    <!-- CHARACTERS TAB -->
+                    <div id="editor-tab-characters" class="editor-tab-content hidden space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400">Project Characters</h4>
+                            <button onclick="app.openCharacterModal()" class="text-xs bg-emerald-600 text-white px-2.5 py-1 rounded">Add Character</button>
+                        </div>
+                        <div id="editor-characters-list" class="space-y-2"></div>
+                    </div>
+
+                    <!-- AUDIO & MUSIC UPLOAD TAB -->
+                    <div id="editor-tab-audio" class="editor-tab-content hidden space-y-4">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400">Section Music & Soundtrack</h4>
+                        <p class="text-[11px] text-slate-400">Upload or assign custom music (.mp3, .wav) for each morality section and title card.</p>
+                        <div id="editor-section-music-list" class="space-y-3">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- EXPORT TAB -->
+                    <div id="editor-tab-export" class="editor-tab-content hidden space-y-4">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-slate-400">Export Video as WebM</h4>
+                        <div class="space-y-3 bg-studio-900 p-4 rounded-xl border border-studio-800 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Quality / Upscaling</label>
+                                <select id="export-quality-mode" class="w-full bg-studio-950 border border-studio-700 rounded-lg p-2 text-white">
+                                    <option value="4k">4K Ultra HD (3840 × 2160)</option>
+                                    <option value="1440p">1440p QHD (2560 × 1440)</option>
+                                    <option value="1080p" selected>1080p Full HD (1920 × 1080)</option>
+                                    <option value="720p">720p HD (1280 × 720)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Video Bitrate</label>
+                                <select id="export-bitrate" class="w-full bg-studio-950 border border-studio-700 rounded-lg p-2 text-white">
+                                    <option value="8000000">High (8 Mbps) – smaller file</option>
+                                    <option value="16000000" selected>Very High (16 Mbps)</option>
+                                    <option value="25000000">Ultra (25 Mbps)</option>
+                                    <option value="45000000">Maximum (45 Mbps) – large file</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Frame Rate</label>
+                                <select id="export-fps" class="w-full bg-studio-950 border border-studio-700 rounded-lg p-2 text-white">
+                                    <option value="30" selected>30 FPS – recommended</option>
+                                    <option value="60">60 FPS – smoother, more demanding</option>
+                                </select>
+                            </div>
+                            <p class="text-[11px] leading-relaxed text-slate-400">Higher resolution and bitrate can make larger files and take longer to export. 4K is an upscale of your project canvas, not a detail-recovery AI upscaler. Use 1080p or 1440p if your device struggles.</p>
+                            <div>
+                                <label class="block font-semibold text-slate-300 mb-1">Slide Duration (seconds)</label>
+                                <input type="number" id="export-slide-duration" value="4" min="2" max="10" class="w-full bg-studio-950 border border-studio-700 rounded-lg p-2 text-white">
+                            </div>
+                            <div class="pt-2">
+                                <button onclick="app.startRealWebMExport()" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-3 rounded-xl shadow-lg flex items-center justify-center space-x-2 transition">
+                                    <i class="fa-solid fa-circle-play"></i>
+                                    <span>Export & Record WebM Video</span>
+                                </button>
+                            </div>
+                            <div id="export-progress-container" class="hidden space-y-2 pt-2">
+                                <div class="flex justify-between text-[11px] text-slate-300">
+                                    <span id="export-status-text">Recording WebM...</span>
+                                    <span id="export-percent">0%</span>
+                                </div>
+                                <div class="w-full bg-studio-950 rounded-full h-2 overflow-hidden border border-studio-700">
+                                    <div id="export-progress-bar" class="bg-amber-500 h-full w-0 transition-all duration-200"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Preview Stage -->
+            <div class="flex-1 flex flex-col bg-studio-950 relative overflow-hidden">
+                <div class="h-14 bg-studio-900 border-b border-studio-800 px-6 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Live Upscaled Preview</span>
+                        <span id="preview-slide-indicator" class="text-xs text-slate-400">Slide 1 of 5</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex items-center justify-center p-6 bg-studio-950 overflow-auto">
+                    <div class="relative shadow-2xl rounded-2xl overflow-hidden border border-studio-800 bg-black flex items-center justify-center" style="width: 800px; height: 450px; max-width: 100%; aspect-ratio: 16/9;">
+                        <canvas id="preview-canvas" width="2560" height="1440" class="w-full h-full object-contain"></canvas>
+                    </div>
+                </div>
+
+                <div class="h-16 bg-studio-900 border-t border-studio-800 px-6 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <button onclick="app.previewPrevSlide()" class="w-10 h-10 rounded-xl bg-studio-800 hover:bg-studio-700 text-slate-200 flex items-center justify-center"><i class="fa-solid fa-backward-step"></i></button>
+                        <button id="play-pause-btn" onclick="app.togglePreviewPlayback()" class="w-12 h-12 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold flex items-center justify-center text-lg shadow-lg"><i class="fa-solid fa-play"></i></button>
+                        <button onclick="app.previewNextSlide()" class="w-10 h-10 rounded-xl bg-studio-800 hover:bg-studio-700 text-slate-200 flex items-center justify-center"><i class="fa-solid fa-forward-step"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CHARACTERS SCREEN -->
+        <section id="screen-characters" class="view-screen hidden flex-1 p-6 md:p-10 overflow-y-auto">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-3xl font-display font-bold text-white">Character Manager</h2>
+                        <p class="text-slate-400 text-sm">Create and organize fictional characters.</p>
+                    </div>
+                    <button onclick="app.openCharacterModal()" class="bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-xl text-sm shadow-lg">Create New Character</button>
+                </div>
+                <div id="characters-grid" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div>
+            </div>
+        </section>
+
+        <!-- 6. SETTINGS SCREEN -->
+        <section id="screen-settings" class="view-screen hidden flex-1 p-6 md:p-10 overflow-y-auto">
+            <div class="max-w-4xl mx-auto space-y-8">
+                <div>
+                    <h2 class="text-3xl font-display font-bold text-white">Studio Settings & Backup</h2>
+                    <p class="text-slate-400 text-sm">IndexedDB storage management.</p>
+                </div>
+                <div class="bg-studio-900 border border-studio-800 p-6 rounded-2xl space-y-6">
+                    <h3 class="font-bold text-lg text-white">Export Backup</h3>
+                    <button onclick="app.exportAllData()" class="bg-studio-800 hover:bg-studio-700 text-white font-semibold px-4 py-2.5 rounded-xl text-xs border border-studio-700">Download JSON Backup</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODALS -->
+
+    <!-- New Project Modal -->
+    <div id="modal-new-project" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-studio-900 border border-studio-700 w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-6">
+            <div class="flex items-center justify-between border-b border-studio-800 pb-4">
+                <h3 class="font-display font-bold text-xl text-white">Create New Video Project</h3>
+                <button onclick="app.closeModal('modal-new-project')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Project Name</label>
+                    <input type="text" id="np-name" placeholder="e.g. Cartoon Morality Analysis" class="w-full bg-studio-950 border border-studio-700 rounded-xl p-3 text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Video Title Card</label>
+                    <input type="text" id="np-video-title" placeholder="e.g. GOOD TO EVIL" class="w-full bg-studio-950 border border-studio-700 rounded-xl p-3 text-sm text-white">
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4 border-t border-studio-800">
+                <button onclick="app.closeModal('modal-new-project')" class="px-4 py-2.5 rounded-xl text-slate-300 text-sm font-semibold">Cancel</button>
+                <button onclick="app.createProjectSubmit()" class="bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg">Create Project</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Modal -->
+    <div id="modal-character" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-studio-900 border border-studio-700 w-full max-w-2xl rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-studio-800 pb-4">
+                <h3 id="char-modal-title" class="font-display font-bold text-xl text-white">Character Profile</h3>
+                <button onclick="app.closeModal('modal-character')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <input type="hidden" id="char-edit-id">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Character Name</label>
+                    <input type="text" id="char-name" class="w-full bg-studio-950 border border-studio-700 rounded-xl p-3 text-sm text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Series / Franchise</label>
+                    <input type="text" id="char-series" class="w-full bg-studio-950 border border-studio-700 rounded-xl p-3 text-sm text-white">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Morality Category</label>
+                    <select id="char-category" class="w-full bg-studio-950 border border-studio-700 rounded-xl p-3 text-sm text-white">
+                        <option value="THE GOOD">THE GOOD</option>
+                        <option value="GRAY AREA">GRAY AREA</option>
+                        <option value="BAD & EVIL">BAD & EVIL</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Portrait Image URL</label>
+                    <input type="text" id="char-image" class="w-full bg-studio-950 border border-studio-700 rounded-xl p-3 text-sm text-white">
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Description / Explanation</label>
+                    <textarea id="char-explanation" rows="3" class="w-full bg-studio-950 border border-studio-700 rounded-xl p-3 text-sm text-white"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4 border-t border-studio-800">
+                <button onclick="app.closeModal('modal-character')" class="px-4 py-2.5 rounded-xl text-slate-300 text-sm font-semibold">Cancel</button>
+                <button onclick="app.saveCharacterSubmit()" class="bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow-lg">Save Character</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        class StudioDB {
+            constructor() {
+                this.dbName = 'GoodToEvilStudioDB_V3';
+                this.dbVersion = 1;
+                this.db = null;
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.dbVersion);
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => { this.db = request.result; resolve(this.db); };
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        if (!db.objectStoreNames.contains('projects')) db.createObjectStore('projects', { keyPath: 'id' });
+                        if (!db.objectStoreNames.contains('characters')) db.createObjectStore('characters', { keyPath: 'id' });
+                    };
+                });
+            }
+
+            async getAll(storeName) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async put(storeName, item) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.put(item);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async delete(storeName, id) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.delete(id);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+        }
+
+        class GoodToEvilStudio {
+            constructor() {
+                this.db = new StudioDB();
+                this.currentProject = null;
+                this.projects = [];
+                this.characters = [];
+                this.previewSlideIndex = 0;
+                this.isPlaying = false;
+                this.playbackTimer = null;
+                this.sectionAudioUrls = {}; // sectionId -> objectURL
+            }
+
+            async init() {
+                await this.db.init();
+                await this.loadInitialData();
+                this.navigate('home');
+                this.renderThumbnail();
+            }
+
+            async loadInitialData() {
+                this.projects = await this.db.getAll('projects');
+                this.characters = await this.db.getAll('characters');
+
+                if (this.projects.length === 0) {
+                    const sampleId = 'proj-sample-1';
+                    const sampleProj = {
+                        id: sampleId,
+                        name: 'Cartoon Morality Analysis',
+                        videoTitle: 'GOOD TO EVIL',
+                        aspect: '16:9',
+                        sections: [
+                            { id: 'sec-1', name: 'THE GOOD', theme: 'sky', audioName: 'Default Orchestral' },
+                            { id: 'sec-2', name: 'GRAY AREA', theme: 'stripes', audioName: 'Suspense Ambience' },
+                            { id: 'sec-3', name: 'BAD & EVIL', theme: 'fire', audioName: 'Hellfire Theme' }
+                        ],
+                        updatedAt: new Date().toISOString()
+                    };
+                    await this.db.put('projects', sampleProj);
+
+                    const sampleChars = [
+                        { id: 'char-1', projectId: sampleId, name: 'Handy', series: 'Happy Tree Friends', category: 'THE GOOD', image: 'https://placehold.co/400x400/orange/white?text=Handy', explanation: 'Well-meaning beaver in The Good.' },
+                        { id: 'char-2', projectId: sampleId, name: 'Fliqpy', series: 'Happy Tree Friends', category: 'BAD & EVIL', image: 'https://placehold.co/400x400/red/white?text=Fliqpy', explanation: 'Terrifying combat veteran in Bad & Evil.' }
+                    ];
+                    for (const c of sampleChars) await this.db.put('characters', c);
+
+                    this.projects = await this.db.getAll('projects');
+                    this.characters = await this.db.getAll('characters');
+                }
+            }
+
+            navigate(screenId) {
+                document.querySelectorAll('.view-screen').forEach(el => el.classList.add('hidden'));
+                const target = document.getElementById(`screen-${screenId}`);
+                if (target) target.classList.remove('hidden');
+
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    if (btn.dataset.target === screenId) btn.classList.add('bg-studio-800', 'text-white');
+                    else btn.classList.remove('bg-studio-800', 'text-white');
+                });
+
+                if (screenId === 'projects') this.renderProjectsList();
+                if (screenId === 'characters') this.renderCharactersGrid();
+                if (screenId === 'thumbnailMaker') this.renderThumbnail();
+                if (screenId === 'editor') {
+                    if (!this.currentProject && this.projects.length > 0) this.currentProject = this.projects[0];
+                    this.refreshEditorUI();
+                }
+            }
+
+            renderThumbnail() {
+                const canvas = document.getElementById('thumb-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const bgStyle = document.getElementById('thumb-bg-style')?.value || 'split-sky-fire';
+                const headerTitle = document.getElementById('thumb-title')?.value || 'GOOD TO EVIL';
+                const headerBg = document.getElementById('thumb-header-bg')?.value || 'yellow';
+                const char1ImgUrl = document.getElementById('thumb-char1-img')?.value || '';
+                const char2ImgUrl = document.getElementById('thumb-char2-img')?.value || '';
+                const char3ImgUrl = document.getElementById('thumb-char3-img')?.value || '';
+                const char1Halo = document.getElementById('thumb-char1-halo')?.checked;
+                const char3Horns = document.getElementById('thumb-char3-horns')?.checked;
+
+                // 1. Background
+                if (bgStyle === 'split-sky-fire') {
+                    ctx.fillStyle = '#38bdf8';
+                    ctx.fillRect(0, 0, canvas.width / 2, canvas.height);
+                    ctx.fillStyle = '#18181b';
+                    ctx.fillRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+                    const fireGrad = ctx.createLinearGradient(0, canvas.height - 300, 0, canvas.height);
+                    fireGrad.addColorStop(0, 'transparent');
+                    fireGrad.addColorStop(1, 'rgba(239, 68, 68, 0.8)');
+                    ctx.fillStyle = fireGrad;
+                    ctx.fillRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+                } else if (bgStyle === 'solid-sky') {
+                    ctx.fillStyle = '#0ea5e9';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else {
+                    ctx.fillStyle = '#090a0f';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                const drawPortrait = (x, y, radius, imgUrl, hasHalo, hasHorns) => {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.clip();
+                    ctx.fillStyle = '#334155';
+                    ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+                    
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.src = imgUrl;
+                    try { ctx.drawImage(img, x - radius, y - radius, radius * 2, radius * 2); } catch(e) {}
+                    ctx.restore();
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.lineWidth = 8;
+                    ctx.strokeStyle = hasHorns ? '#ef4444' : (hasHalo ? '#38bdf8' : '#f59e0b');
+                    ctx.stroke();
+
+                    if (hasHalo) {
+                        ctx.beginPath();
+                        ctx.ellipse(x, y - radius - 25, 45, 15, 0, 0, Math.PI * 2);
+                        ctx.lineWidth = 10;
+                        ctx.strokeStyle = '#fde047';
+                        ctx.stroke();
+                        ctx.fillStyle = '#fef08a';
+                        ctx.fill();
+                    }
+
+                    if (hasHorns) {
+                        ctx.fillStyle = '#ef4444';
+                        ctx.beginPath();
+                        ctx.moveTo(x - 30, y - radius + 10);
+                        ctx.quadraticCurveTo(x - 50, y - radius - 40, x - 10, y - radius - 20);
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.moveTo(x + 30, y - radius + 10);
+                        ctx.quadraticCurveTo(x + 50, y - radius - 40, x + 10, y - radius - 20);
+                        ctx.fill();
+                    }
+                };
+
+                drawPortrait(280, 380, 150, char1ImgUrl, char1Halo, false);
+                drawPortrait(640, 360, 170, char2ImgUrl, false, false);
+                drawPortrait(1000, 380, 150, char3ImgUrl, false, char3Horns);
+
+                ctx.fillStyle = headerBg === 'red' ? '#dc2626' : (headerBg === 'purple' ? '#7e22ce' : '#eab308');
+                ctx.fillRect(0, 40, canvas.width, 100);
+
+                ctx.fillStyle = '#000000';
+                ctx.font = '900 64px Montserrat, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(headerTitle, canvas.width / 2 + 3, 115);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(headerTitle, canvas.width / 2, 112);
+            }
+
+            downloadThumbnail() {
+                const canvas = document.getElementById('thumb-canvas');
+                if (!canvas) return;
+                const link = document.createElement('a');
+                link.download = 'MoralityThumbnail.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+
+            renderProjectsList() {
+                const container = document.getElementById('projects-list-container');
+                if (!container) return;
+                container.innerHTML = this.projects.map(p => `
+                    <div class="bg-studio-900 border border-studio-800 rounded-2xl p-5 space-y-4 shadow-xl">
+                        <div class="h-36 rounded-xl bg-studio-950 flex items-center justify-center border border-studio-800 relative">
+                            <i class="fa-solid fa-film text-4xl text-amber-500"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">${p.name}</h3>
+                            <p class="text-xs text-slate-400">Title: ${p.videoTitle}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-studio-800">
+                            <button onclick="app.openProject('${p.id}')" class="bg-amber-500 hover:bg-amber-600 text-black font-bold px-4 py-2 rounded-xl text-xs">Open Editor</button>
+                            <button onclick="app.deleteProject('${p.id}')" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            openNewProjectModal() { document.getElementById('modal-new-project').classList.remove('hidden'); }
+            closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+            async createProjectSubmit() {
+                const name = document.getElementById('np-name').value || 'New Project';
+                const videoTitle = document.getElementById('np-video-title').value || 'GOOD TO EVIL';
+                const newProj = {
+                    id: 'proj-' + Date.now(),
+                    name, videoTitle, aspect: '16:9',
+                    sections: [
+                        { id: 'sec-1', name: 'THE GOOD', theme: 'sky', audioName: 'Orchestral Triumph' },
+                        { id: 'sec-2', name: 'GRAY AREA', theme: 'stripes', audioName: 'Suspense Chill' },
+                        { id: 'sec-3', name: 'BAD & EVIL', theme: 'fire', audioName: 'Dark Hellfire' }
+                    ],
+                    updatedAt: new Date().toISOString()
+                };
+                await this.db.put('projects', newProj);
+                this.projects = await this.db.getAll('projects');
+                this.closeModal('modal-new-project');
+                this.openProject(newProj.id);
+            }
+
+            async openProject(id) {
+                this.currentProject = this.projects.find(p => p.id === id);
+                if (!this.currentProject) return;
+                document.getElementById('header-project-badge').classList.remove('hidden');
+                document.getElementById('header-proj-title').innerText = this.currentProject.name;
+                this.navigate('editor');
+            }
+
+            async deleteProject(id) {
+                await this.db.delete('projects', id);
+                this.projects = await this.db.getAll('projects');
+                this.renderProjectsList();
+            }
+
+            switchEditorTab(tab) {
+                document.querySelectorAll('.editor-tab-content').forEach(el => el.classList.add('hidden'));
+                document.getElementById(`editor-tab-${tab}`).classList.remove('hidden');
+                document.querySelectorAll('.editor-tab-btn').forEach(btn => {
+                    if (btn.dataset.tab === tab) btn.classList.add('text-amber-400', 'border-b-2', 'border-amber-400', 'font-semibold');
+                    else btn.classList.remove('text-amber-400', 'border-b-2', 'border-amber-400', 'font-semibold');
+                });
+            }
+
+            refreshEditorUI() {
+                if (!this.currentProject) return;
+                document.getElementById('editor-project-title-label').innerText = this.currentProject.name;
+                const projChars = this.characters.filter(c => c.projectId === this.currentProject.id);
+
+                // Slides list including section title cards
+                let html = `<div class="bg-studio-900 border border-studio-800 p-3 rounded-xl flex justify-between text-xs"><span class="font-bold text-amber-400">1. Title Card: ${this.currentProject.videoTitle}</span></div>`;
+                let slideNum = 2;
+                this.currentProject.sections.forEach(sec => {
+                    html += `<div class="bg-studio-900 border border-studio-800 p-3 rounded-xl flex justify-between text-xs border-l-4 border-l-amber-500"><span class="font-bold text-amber-300"><i class="fa-solid fa-layer-group mr-1.5"></i>Section Card: ${sec.name}</span><span>Slide ${slideNum++}</span></div>`;
+                    const matches = projChars.filter(c => c.category === sec.name);
+                    matches.forEach(c => {
+                        html += `<div class="bg-studio-900/60 border border-studio-800 p-2.5 rounded-xl flex items-center justify-between text-xs ml-4"><div class="flex items-center space-x-2"><img src="${c.image}" class="w-7 h-7 rounded object-cover"><span class="font-semibold text-white">${c.name}</span></div><span>Slide ${slideNum++}</span></div>`;
+                    });
+                });
+                document.getElementById('editor-slides-list').innerHTML = html;
+
+                // Sections list
+                document.getElementById('editor-sections-list').innerHTML = this.currentProject.sections.map(s => `
+                    <div class="bg-studio-900 border border-studio-800 p-3 rounded-xl flex justify-between items-center text-xs">
+                        <span class="font-bold text-white">${s.name}</span>
+                        <span class="text-slate-400 uppercase">Theme: ${s.theme}</span>
+                    </div>
+                `).join('');
+
+                // Section Audio list
+                document.getElementById('editor-section-music-list').innerHTML = this.currentProject.sections.map(s => `
+                    <div class="bg-studio-900 border border-studio-800 p-3.5 rounded-xl space-y-2 text-xs">
+                        <div class="flex justify-between items-center font-bold text-white">
+                            <span><i class="fa-solid fa-music mr-1.5 text-amber-400"></i>${s.name}</span>
+                            <span class="text-amber-400 text-[11px]">${s.audioName || 'Default Track'}</span>
+                        </div>
+                        <input type="file" accept="audio/*" onchange="app.handleSectionAudioUpload(event, '${s.id}')" class="w-full bg-studio-950 border border-studio-700 rounded-lg p-2 text-white text-[11px]">
+                    </div>
+                `).join('');
+
+                // Characters list
+                document.getElementById('editor-characters-list').innerHTML = projChars.map(c => `
+                    <div class="bg-studio-900 border border-studio-800 p-3 rounded-xl flex items-center justify-between text-xs">
+                        <div class="flex items-center space-x-3">
+                            <img src="${c.image}" class="w-8 h-8 rounded object-cover">
+                            <div><h4 class="font-bold text-white">${c.name}</h4><p class="text-[10px] text-slate-400">${c.category}</p></div>
+                        </div>
+                        <button onclick="app.openCharacterModal('${c.id}')" class="text-amber-400">Edit</button>
+                    </div>
+                `).join('');
+
+                this.renderCanvasPreview();
+            }
+
+            renderCharactersGrid() {
+                const grid = document.getElementById('characters-grid');
+                if (!grid) return;
+                grid.innerHTML = this.characters.map(c => `
+                    <div class="bg-studio-900 border border-studio-800 rounded-2xl overflow-hidden shadow-xl flex flex-col">
+                        <div class="h-48 bg-studio-950"><img src="${c.image}" class="w-full h-full object-cover"></div>
+                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div><h3 class="font-bold text-white">${c.name}</h3><p class="text-xs text-slate-400">${c.category}</p></div>
+                            <button onclick="app.deleteCharacter('${c.id}')" class="text-xs text-red-400">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            openCharacterModal(id = null) {
+                document.getElementById('modal-character').classList.remove('hidden');
+                if (id) {
+                    const c = this.characters.find(item => item.id === id);
+                    if (c) {
+                        document.getElementById('char-edit-id').value = c.id;
+                        document.getElementById('char-name').value = c.name;
+                        document.getElementById('char-series').value = c.series;
+                        document.getElementById('char-category').value = c.category;
+                        document.getElementById('char-image').value = c.image;
+                        document.getElementById('char-explanation').value = c.explanation;
+                    }
+                } else {
+                    document.getElementById('char-edit-id').value = '';
+                    document.getElementById('char-name').value = '';
+                    document.getElementById('char-series').value = '';
+                    document.getElementById('char-image').value = 'https://placehold.co/400x400/3b82f6/white?text=Char';
+                    document.getElementById('char-explanation').value = '';
+                }
+            }
+
+            async saveCharacterSubmit() {
+                const id = document.getElementById('char-edit-id').value || 'char-' + Date.now();
+                const charObj = {
+                    id,
+                    projectId: this.currentProject ? this.currentProject.id : 'proj-sample-1',
+                    name: document.getElementById('char-name').value || 'Character',
+                    series: document.getElementById('char-series').value || 'Series',
+                    category: document.getElementById('char-category').value,
+                    image: document.getElementById('char-image').value,
+                    explanation: document.getElementById('char-explanation').value
+                };
+                await this.db.put('characters', charObj);
+                this.characters = await this.db.getAll('characters');
+                this.closeModal('modal-character');
+                this.refreshEditorUI();
+                this.renderCharactersGrid();
+            }
+
+            async deleteCharacter(id) {
+                await this.db.delete('characters', id);
+                this.characters = await this.db.getAll('characters');
+                this.refreshEditorUI();
+                this.renderCharactersGrid();
+            }
+
+            handleSectionAudioUpload(e, secId) {
+                const file = e.target.files[0];
+                if (file && this.currentProject) {
+                    this.sectionAudioUrls[secId] = URL.createObjectURL(file);
+                    const sec = this.currentProject.sections.find(s => s.id === secId);
+                    if (sec) {
+                        sec.audioName = file.name;
+                        this.db.put('projects', this.currentProject);
+                        this.refreshEditorUI();
+                    }
+                }
+            }
+
+            // Map flat slide index to: 0 = main title card, or section card, or character slide
+            getSlideMeta(index) {
+                if (!this.currentProject) return { type: 'mainTitle' };
+                const projChars = this.characters.filter(c => c.projectId === this.currentProject.id);
+
+                if (index === 0) return { type: 'mainTitle' };
+
+                let curr = 1;
+                for (const sec of this.currentProject.sections) {
+                    if (index === curr) return { type: 'sectionCard', section: sec };
+                    curr++;
+                    const matches = projChars.filter(c => c.category === sec.name);
+                    for (const char of matches) {
+                        if (index === curr) return { type: 'character', character: char, section: sec };
+                        curr++;
+                    }
+                }
+                return { type: 'mainTitle' };
+            }
+
+            getTotalSlidesCount() {
+                if (!this.currentProject) return 1;
+                const projChars = this.characters.filter(c => c.projectId === this.currentProject.id);
+                let count = 1; // main title
+                this.currentProject.sections.forEach(sec => {
+                    count++; // section card
+                    count += projChars.filter(c => c.category === sec.name).length;
+                });
+                return count;
+            }
+
+            renderCanvasPreview() {
+                const canvas = document.getElementById('preview-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const meta = this.getSlideMeta(this.previewSlideIndex);
+
+                if (meta.type === 'mainTitle') {
+                    // High quality upscale main title card
+                    const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                    bgGrad.addColorStop(0, '#090a0f');
+                    bgGrad.addColorStop(1, '#1a1d2e');
+                    ctx.fillStyle = bgGrad;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.font = '900 84px Montserrat, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                    ctx.shadowBlur = 30;
+                    ctx.fillText(this.currentProject ? this.currentProject.videoTitle : 'GOOD TO EVIL', canvas.width / 2, canvas.height / 2 - 20);
+
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '600 32px Inter, sans-serif';
+                    ctx.fillText('ULTIMATE MORALITY ANALYSIS', canvas.width / 2, canvas.height / 2 + 60);
+                    ctx.shadowBlur = 0;
+                } else if (meta.type === 'sectionCard') {
+                    // High quality upscale section title card
+                    const isFire = meta.section.theme === 'fire';
+                    const isSky = meta.section.theme === 'sky';
+                    ctx.fillStyle = isFire ? '#18181b' : (isSky ? '#0284c7' : '#27272a');
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    if (isFire) {
+                        const fireGrad = ctx.createLinearGradient(0, 500, 0, canvas.height);
+                        fireGrad.addColorStop(0, 'transparent');
+                        fireGrad.addColorStop(1, 'rgba(239, 68, 68, 0.7)');
+                        ctx.fillStyle = fireGrad;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '900 96px Montserrat, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+                    ctx.shadowBlur = 40;
+                    ctx.fillText(meta.section.name, canvas.width / 2, canvas.height / 2);
+                    ctx.shadowBlur = 0;
+                } else if (meta.type === 'character') {
+                    const char = meta.character;
+                    ctx.fillStyle = char.category === 'THE GOOD' ? '#1e3a8a' : (char.category === 'BAD & EVIL' ? '#7f1d1d' : '#1e293b');
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Portrait frame upscaled
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(240, 240, 720, 960);
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.src = char.image;
+                    try { ctx.drawImage(img, 260, 260, 680, 920); } catch(e) {}
+
+                    // Details box upscaled
+                    ctx.fillStyle = 'rgba(9, 10, 15, 0.92)';
+                    ctx.fillRect(1040, 200, 1320, 1040);
+
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.font = '800 64px Montserrat, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(char.name, 1120, 360);
+
+                    ctx.fillStyle = '#cbd5e1';
+                    ctx.font = '700 32px Inter, sans-serif';
+                    ctx.fillText(`Category: ${char.category}`, 1120, 440);
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '500 36px Inter, sans-serif';
+                    // Word wrap description
+                    const wrapText = (text, x, y, maxWidth, lineHeight) => {
+                        const words = text.split(' ');
+                        let line = '';
+                        for(let n = 0; n < words.length; n++) {
+                            const testLine = line + words[n] + ' ';
+                            const metrics = ctx.measureText(testLine);
+                            const testWidth = metrics.width;
+                            if (testWidth > maxWidth && n > 0) {
+                                ctx.fillText(line, x, y);
+                                line = words[n] + ' ';
+                                y += lineHeight;
+                            } else {
+                                line = testLine;
+                            }
+                        }
+                        ctx.fillText(line, x, y);
+                    };
+                    wrapText(char.explanation || 'No description provided.', 1120, 560, 1160, 50);
+                }
+
+                const total = this.getTotalSlidesCount();
+                document.getElementById('preview-slide-indicator').innerText = `Slide ${this.previewSlideIndex + 1} of ${total}`;
+            }
+
+            previewPrevSlide() {
+                if (this.previewSlideIndex > 0) { this.previewSlideIndex--; this.renderCanvasPreview(); }
+            }
+
+            previewNextSlide() {
+                const total = this.getTotalSlidesCount();
+                if (this.previewSlideIndex < total - 1) { this.previewSlideIndex++; this.renderCanvasPreview(); }
+            }
+
+            togglePreviewPlayback() {
+                this.isPlaying = !this.isPlaying;
+                const btn = document.getElementById('play-pause-btn');
+                const total = this.getTotalSlidesCount();
+
+                if (this.isPlaying) {
+                    btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    this.playbackTimer = setInterval(() => {
+                        if (this.previewSlideIndex < total - 1) {
+                            this.previewSlideIndex++;
+                            this.renderCanvasPreview();
+                        } else {
+                            this.previewSlideIndex = 0;
+                            this.renderCanvasPreview();
+                            this.togglePreviewPlayback();
+                        }
+                    }, 3500);
+                } else {
+                    btn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    clearInterval(this.playbackTimer);
+                }
+            }
+
+            async startRealWebMExport() {
+                const container = document.getElementById('export-progress-container');
+                const bar = document.getElementById('export-progress-bar');
+                const status = document.getElementById('export-status-text');
+                const percent = document.getElementById('export-percent');
+                const sourceCanvas = document.getElementById('preview-canvas');
+
+                const sizes = {
+                    '4k': [3840, 2160],
+                    '1440p': [2560, 1440],
+                    '1080p': [1920, 1080],
+                    '720p': [1280, 720]
+                };
+                const quality = document.getElementById('export-quality-mode').value;
+                const [width, height] = sizes[quality] || sizes['1080p'];
+                const fps = Number(document.getElementById('export-fps').value) || 30;
+                const bitrate = Number(document.getElementById('export-bitrate').value) || 16000000;
+                const slideSeconds = Math.min(10, Math.max(2, Number(document.getElementById('export-slide-duration').value) || 4));
+                const slideDuration = slideSeconds * 1000;
+
+                // Preserve the editor canvas and scale each frame into a dedicated export canvas.
+                const outputCanvas = document.createElement('canvas');
+                outputCanvas.width = width;
+                outputCanvas.height = height;
+                const outputCtx = outputCanvas.getContext('2d', { alpha: false });
+                if (!outputCtx || !outputCanvas.captureStream || !window.MediaRecorder) {
+                    alert('Your browser does not support canvas video recording. Try a recent version of Chrome or Edge.');
+                    return;
+                }
+
+                const drawExportFrame = () => {
+                    outputCtx.imageSmoothingEnabled = true;
+                    outputCtx.imageSmoothingQuality = 'high';
+                    outputCtx.clearRect(0, 0, width, height);
+                    outputCtx.drawImage(sourceCanvas, 0, 0, width, height);
+                };
+
+                container.classList.remove('hidden');
+                bar.style.width = '0%';
+                percent.innerText = '0%';
+                status.innerText = `Preparing ${quality.toUpperCase()} export…`;
+
+                const stream = outputCanvas.captureStream(fps);
+                const mimeCandidates = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+                const mimeType = mimeCandidates.find(type => MediaRecorder.isTypeSupported(type));
+                let recorder;
+                try {
+                    recorder = new MediaRecorder(stream, {
+                        ...(mimeType ? { mimeType } : {}),
+                        videoBitsPerSecond: bitrate
+                    });
+                } catch (error) {
+                    stream.getTracks().forEach(track => track.stop());
+                    container.classList.add('hidden');
+                    alert('This browser could not start the selected video export. Try a lower resolution or bitrate.');
+                    return;
+                }
+
+                const chunks = [];
+                recorder.ondataavailable = event => {
+                    if (event.data && event.data.size) chunks.push(event.data);
+                };
+                recorder.onerror = () => {
+                    stream.getTracks().forEach(track => track.stop());
+                    container.classList.add('hidden');
+                    alert('The video export encountered an error. Try 1080p or a lower bitrate.');
+                };
+                recorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: recorder.mimeType || 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    const safeName = (this.currentProject ? this.currentProject.name : 'MoralityVideo')
+                        .replace(/[\\\\/:*?"<>|]+/g, '_');
+                    link.href = url;
+                    link.download = `${safeName}_${quality}_${fps}fps.webm`;
+                    link.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 60000);
+                    stream.getTracks().forEach(track => track.stop());
+                    status.innerText = `Export complete: ${width} × ${height}, ${fps} FPS.`;
+                    percent.innerText = '100%';
+                    bar.style.width = '100%';
+                    setTimeout(() => container.classList.add('hidden'), 1800);
+                };
+
+                const totalSlides = this.getTotalSlidesCount();
+                this.previewSlideIndex = 0;
+                this.renderCanvasPreview();
+                drawExportFrame();
+
+                try {
+                    recorder.start(1000);
+                    status.innerText = `Recording ${width} × ${height} at ${fps} FPS…`;
+                } catch (error) {
+                    stream.getTracks().forEach(track => track.stop());
+                    container.classList.add('hidden');
+                    alert('Could not begin recording. Try a lower export setting.');
+                    return;
+                }
+
+                let currentSlide = 0;
+                const recordingInterval = setInterval(() => {
+                    currentSlide++;
+                    const pct = Math.round((currentSlide / totalSlides) * 100);
+                    bar.style.width = pct + '%';
+                    percent.innerText = pct + '%';
+
+                    if (currentSlide < totalSlides) {
+                        this.previewSlideIndex = currentSlide;
+                        this.renderCanvasPreview();
+                        drawExportFrame();
+                    } else {
+                        clearInterval(recordingInterval);
+                        setTimeout(() => {
+                            if (recorder.state !== 'inactive') recorder.stop();
+                        }, 1000);
+                    }
+                }, slideDuration);
+            }
+
+            exportAllData() {
+                const data = { projects: this.projects, characters: this.characters };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'GoodToEvilStudio_Backup.json';
+                a.click();
+            }
+        }
+
+        const app = new GoodToEvilStudio();
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
